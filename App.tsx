@@ -37,7 +37,7 @@ function Section({children, title}: SectionProps): React.JSX.Element {
         style={[
           styles.sectionTitle,
           {
-            color: isDarkMode ? Colors.white : Colors.black,
+            color:'orange',
           },
         ]}>
         {title}
@@ -74,7 +74,7 @@ function App(): React.JSX.Element {
         <Header />
         <View
           style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
+            backgroundColor: '#FFECC8' 
           }}>
           <Section title="Nama">
            Raissa Nirbana
@@ -86,6 +86,7 @@ function App(): React.JSX.Element {
             PGBL - A
           </Section>
           <Section title="Link Media Sosial">
+            Berikut media sosial yang dapat diakses:
           </Section>
           <LearnMoreLinks />
         </View>
@@ -100,7 +101,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   sectionTitle: {
-    fontSize: 24,
+    fontSize: 22,
     fontWeight: '600',
   },
   sectionDescription: {
@@ -112,5 +113,6 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
 });
+
 
 export default App;
