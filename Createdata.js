@@ -1,9 +1,9 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { SafeAreaView, View, ScrollView, TextInput, Button, StyleSheet, Text } from 'react-native';
 
 
 const Createdata = () => {
-    const jsonUrl = 'http://192.168.239.90:3000/mahasiswa'; //API yang digunakan emulator untuk mengakses lokalhost desktop
+    const jsonUrl = 'http://10.0.2.2:3000/mahasiswa'; //API yang digunakan emulator untuk mengakses lokalhost desktop
     const [first_name, setFirstName] = useState('');
     const [last_name, setLastName] = useState('');
     const [kelas, setKelas] = useState('');
@@ -18,7 +18,7 @@ const Createdata = () => {
             kelas: kelas,
             gender: gender,
         };
-        fetch('http://192.168.239.90:3000/mahasiswa', {
+        fetch('http://10.0.2.2:3000/mahasiswa', {
             method: 'POST',
             headers: {
                 'Accept': 'application/json', //Format data yang akan diterima oleh server dalam format JSON
