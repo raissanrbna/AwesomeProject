@@ -1,139 +1,180 @@
-import { View, Text, StyleSheet, TouchableOpacity, FlatList, Button, Alert } from 'react-native'
-import React, { useEffect, useState } from 'react'
-import { SafeAreaView } from 'react-native-safe-area-context'
+import { View, Text, StyleSheet, TouchableOpacity, FlatList, Button, Alert, Linking, Image } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome'
-import { faGraduationCap, faChevronRight } from '@fortawesome/free-solid-svg-icons'
-
+import { faAnglesRight } from '@fortawesome/free-solid-svg-icons'
 
 const Listdata = () => {
-    const jsonUrl = 'http://10.0.2.2:3000/mahasiswa';
+    const jsonUrl = 'http://10.0.2.2:3000/wisata';
     const [isLoading, setLoading] = useState(true);
-    const [dataUser, setDataUser] = useState({});
+    const [dataUser, setDataUser] = useState([]);
     const [refresh, setRefresh] = useState(false);
 
     useEffect(() => {
         fetch(jsonUrl)
             .then((response) => response.json())
             .then((json) => {
-                console.log(json)
-                setDataUser(json)
+                console.log(json);
+                setDataUser(json);
             })
             .catch((error) => console.error(error))
             .finally(() => setLoading(false));
     }, []);
+
     function refreshPage() {
+        setRefresh(true);
         fetch(jsonUrl)
             .then((response) => response.json())
             .then((json) => {
-                console.log(json)
-                setDataUser(json)
+                console.log(json);
+                setDataUser(json);
             })
             .catch((error) => console.error(error))
-            .finally(() => setLoading(false));
+            .finally(() => setRefresh(false));
     }
+
     function deleteData(id) {
-        fetch(jsonUrl + '/' + id, {
+        fetch(`${jsonUrl}/${id}`, {
             method: 'DELETE',
         })
             .then((response) => response.json())
             .then((json) => {
                 console.log(json);
-                alert('Data terhapus');
+                Alert.alert('Berhasil', 'Data berhasil dihapus.');
                 refreshPage();
             })
+            .catch((error) => console.error(error));
     }
 
-
     return (
-        <SafeAreaView>
+        <SafeAreaView style={styles.safeArea}>
             {isLoading ? (
-                <View style={{ alignItems: 'center', marginTop: 20 }}>
-                    <Text style={styles.cardtitle}>Loading...</Text>
+                <View style={styles.loadingContainer}>
+                    <Text style={styles.cardTitle}>Loading...</Text>
                 </View>
             ) : (
-                <View>
+                <View style={styles.listContainer}>
+
+                    {/* Judul */}
+                    <Text style={styles.sectionTitle}>DAFTAR DESTINASI WISATA </Text>
                     <FlatList
-                        style={{ marginBottom: 0 }}
+                        style={styles.flatList}
+                        contentContainerStyle={{ paddingBottom: 100 }}
                         data={dataUser}
-                        onRefresh={() => { refreshPage() }}
+                        onRefresh={refreshPage}
                         refreshing={refresh}
-                        keyExtractor={({ id }, index) => id}
+                        keyExtractor={(item) => item.id.toString()}
                         renderItem={({ item }) => (
                             <View>
-                                <TouchableOpacity>
+                                <TouchableOpacity
+                                    onPress={() =>
+                                        Linking.openURL(
+                                            `google.navigation:q=${item.latitude},${item.longitude}`
+                                        )
+                                    }
+                                >
                                     <View style={styles.card}>
-                                        <View style={styles.avatar}>
-                                            <FontAwesomeIcon icon={faGraduationCap} size={50} color={item.color} />
-                                        </View>
+                                        <Image
+                                            source={{ uri: item.image_url }}
+                                            style={styles.avatar}
+                                            resizeMode="cover"
+                                        />
                                         <View>
-                                            <Text style={styles.cardtitle}>{item.first_name} {item.last_name}</Text>
-                                            <Text>{item.kelas}</Text>
-                                            <Text>{item.gender}</Text>
+                                            <Text style={styles.cardTitle}>{item.nama_wisata}</Text>
+                                            <Text style={styles.cardText}>
+                                                Jam: {item.jam_operasional} WIB
+                                            </Text>
+                                            <Text style={styles.cardText}>HTM: {item.htm}</Text>
                                         </View>
                                         <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end' }}>
-                                            <FontAwesomeIcon icon={faChevronRight} size={20} />
+                                            <FontAwesomeIcon icon={faAnglesRight} size={20} style={{ color: '#b99668' }} />
                                         </View>
                                     </View>
                                 </TouchableOpacity>
                                 <View style={styles.form}>
-                                    <Button title="Hapus"
-                                        onPress={() => Alert.alert('Hapus data', 'Yakin akan menghapus data ini?', [
-                                            { text: 'Tidak', onPress: () => console.log('button tidak') },
-                                            { text: 'Ya', onPress: () => deleteData(item.id) },
-                                        ])}
-                                        color={'red'}
+                                    <Button
+                                        title="Hapus"
+                                        onPress={() =>
+                                            Alert.alert('Hapus data', 'Yakin akan menghapus data ini?', [
+                                                { text: 'Tidak', onPress: () => console.log('Tidak') },
+                                                { text: 'Ya', onPress: () => deleteData(item.id) },
+                                            ])
+                                        }
+                                        color={'#b99668'}
                                     />
                                 </View>
-
                             </View>
                         )}
                     />
                 </View>
             )}
         </SafeAreaView>
-    )
-}
+    );
+};
 
-export default Listdata
+export default Listdata;
 
 const styles = StyleSheet.create({
-    title: {
-        paddingVertical: 12,
-        backgroundColor: '#333',
-        color: 'white',
-        fontSize: 20,
+    safeArea: {
+        flex: 1,
+        backgroundColor: '#2d4442',
+    },
+    loadingContainer: {
+        alignItems: 'center',
+        marginTop: 20,
+    },
+    listContainer: {
+        flex: 1,
+    },
+    sectionTitle: {
+        fontSize: 25,
         fontWeight: 'bold',
+        color: '#b99668',
         textAlign: 'center',
+        marginVertical: 15,
+    },
+    cardTitle: {
+        fontSize: 16,
+        fontWeight: 'bold',
+        color: '#333',
+        marginTop: 15,
+    },
+    cardText: {
+        fontSize: 14,
+        color: '#555',
     },
     avatar: {
-        borderRadius: 100,
-        width: 80,
-    },
-    cardtitle: {
-        fontSize: 14,
-        fontWeight: 'bold',
+        borderRadius: 10,
+        width: 100,
+        height: 100,
+        marginRight: 20,
     },
     card: {
         flexDirection: 'row',
         padding: 20,
         borderRadius: 10,
-        backgroundColor: 'white',
+        backgroundColor: '#fff',
         shadowColor: '#000',
         shadowOffset: {
-            width: 1,
-            height: 1,
+            width: 0,
+            height: 2,
         },
-        shadowOpacity: 0.20,
-        shadowRadius: 1.41,
-        elevation: 2,
-        marginHorizontal: 20,
-        marginVertical: 7
+        shadowOpacity: 0.2,
+        shadowRadius: 4,
+        elevation: 3,
+        marginHorizontal: 15,
+        marginVertical: 8,
+    },
+    cardArrow: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'flex-end',
     },
     form: {
         paddingHorizontal: 20,
-        paddingTop: 5,
-        paddingBottom: 20,
+        paddingBottom: 10,
     },
-})
-
-
+    flatList: {
+        paddingTop: 10,
+    },
+});

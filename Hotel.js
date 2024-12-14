@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-native-fontawesome';
-import { faAnglesRight, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
-import { SafeAreaView, View, TextInput, Image, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
+import { faAnglesRight } from '@fortawesome/free-solid-svg-icons';
+import { SafeAreaView, View, ScrollView, TextInput, Image, FlatList, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
 const Createdata = () => {
     const jsonUrl = 'http://10.0.2.2:3000/wisata';
@@ -13,9 +13,9 @@ const Createdata = () => {
     const [image_url, setImageUrl] = useState('');
     const [dataUser, setDataUser] = useState([]);
     const [refresh, setRefresh] = useState(false);
-    const [selectedUser, setSelectedUser] = useState(null); // Default selection
+    const [selectedUser, setSelectedUser] = useState(null); // Deklarasi default
 
-    // Fetch data on initial render
+    // Fetch data saat pertama kali render
     useEffect(() => {
         refreshPage();
     }, []);
@@ -110,93 +110,89 @@ const Createdata = () => {
 
     return (
         <SafeAreaView style={styles.container}>
-            <FlatList
-                data={[{ key: 'form' }]} // Use a dummy item for the form section
-                ListHeaderComponent={() => (
-                    <View style={styles.card}>
-                        <Text style={styles.cardTitle}>Form Input Data</Text>
+            <ScrollView contentContainerStyle={styles.scrollContainer}>
+                <View style={styles.card}>
+                    <Text style={styles.cardTitle}>Form Input Data</Text>
 
-                        <View style={styles.inputCard}>
-                            <Text style={styles.inputLabel}>Nama Destinasi Wisata</Text>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Masukkan nama wisata"
-                                placeholderTextColor="#A5C9CA"
-                                value={nama_wisata}
-                                onChangeText={(value) => setNamaWisata(value)}
-                            />
-                        </View>
+                    <View style={styles.inputCard}>
+                        <Text style={styles.inputLabel}>Nama Destinasi Wisata</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Masukkan nama wisata"
+                            placeholderTextColor="#A5C9CA"
+                            value={nama_wisata}
+                            onChangeText={(value) => setNamaWisata(value)}
+                        />
+                    </View>
 
-                        <View style={styles.inputCard}>
-                            <Text style={styles.inputLabel}>Jam Operasional</Text>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Contoh: 08:00 - 17:00"
-                                placeholderTextColor="#A5C9CA"
-                                value={jam_operasional}
-                                onChangeText={(value) => setJamOperasional(value)}
-                            />
-                        </View>
+                    <View style={styles.inputCard}>
+                        <Text style={styles.inputLabel}>Jam Operasional</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Contoh: 08:00 - 17:00"
+                            placeholderTextColor="#A5C9CA"
+                            value={jam_operasional}
+                            onChangeText={(value) => setJamOperasional(value)}
+                        />
+                    </View>
 
-                        <View style={styles.inputCard}>
-                            <Text style={styles.inputLabel}>HTM</Text>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Masukkan harga tiket masuk"
-                                placeholderTextColor="#A5C9CA"
-                                keyboardType="numeric"
-                                value={htm}
-                                onChangeText={(value) => setHTM(value)}
-                            />
-                        </View>
+                    <View style={styles.inputCard}>
+                        <Text style={styles.inputLabel}>HTM</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Masukkan harga tiket masuk"
+                            placeholderTextColor="#A5C9CA"
+                            keyboardType="numeric"
+                            value={htm}
+                            onChangeText={(value) => setHTM(value)}
+                        />
+                    </View>
 
-                        <View style={styles.inputCard}>
-                            <Text style={styles.inputLabel}>Latitude</Text>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Latitude lokasi"
-                                placeholderTextColor="#A5C9CA"
-                                keyboardType="numeric"
-                                value={latitude}
-                                onChangeText={(value) => setLatitude(value)}
-                            />
-                        </View>
+                    <View style={styles.inputCard}>
+                        <Text style={styles.inputLabel}>Latitude</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Latitude lokasi"
+                            placeholderTextColor="#A5C9CA"
+                            keyboardType="numeric"
+                            value={latitude}
+                            onChangeText={(value) => setLatitude(value)}
+                        />
+                    </View>
 
-                        <View style={styles.inputCard}>
-                            <Text style={styles.inputLabel}>Longitude</Text>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Longitude lokasi"
-                                placeholderTextColor="#A5C9CA"
-                                keyboardType="numeric"
-                                value={longitude}
-                                onChangeText={(value) => setLongitude(value)}
-                            />
-                        </View>
+                    <View style={styles.inputCard}>
+                        <Text style={styles.inputLabel}>Longitude</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Longitude lokasi"
+                            placeholderTextColor="#A5C9CA"
+                            keyboardType="numeric"
+                            value={longitude}
+                            onChangeText={(value) => setLongitude(value)}
+                        />
+                    </View>
 
-                        <View style={styles.inputCard}>
-                            <Text style={styles.inputLabel}>URL Gambar</Text>
-                            <TextInput
-                                style={styles.input}
-                                placeholder="Masukkan URL gambar"
-                                placeholderTextColor="#A5C9CA"
-                                value={image_url}
-                                onChangeText={(value) => setImageUrl(value)}
-                            />
-                        </View>
-                        <View style={styles.buttonContainer}>
-                            <TouchableOpacity style={styles.button} onPress={createData}>
-                                <Text style={styles.buttonText}>Create</Text>
-                            </TouchableOpacity>
+                    <View style={styles.inputCard}>
+                        <Text style={styles.inputLabel}>URL Gambar</Text>
+                        <TextInput
+                            style={styles.input}
+                            placeholder="Masukkan URL gambar"
+                            placeholderTextColor="#A5C9CA"
+                            value={image_url}
+                            onChangeText={(value) => setImageUrl(value)}
+                        />
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity style={styles.button} onPress={createData}>
+                            <Text style={styles.buttonText}>Create</Text>
+                        </TouchableOpacity>
 
-                            <TouchableOpacity style={styles.button} onPress={submitData}>
-                                <Text style={styles.buttonText}>Edit</Text>
-                            </TouchableOpacity>
+                        <TouchableOpacity style={styles.button} onPress={submitData}>
+                            <Text style={styles.buttonText}>Edit</Text>
+                        </TouchableOpacity>
                         </View>
                     </View>
-                )}
-                keyExtractor={(item) => item.key}
-                ListFooterComponent={() => (
+
                     <FlatList
                         data={dataUser}
                         refreshing={refresh}
@@ -211,42 +207,38 @@ const Createdata = () => {
                                         <Text style={styles.cardText2}>Jam: {item.jam_operasional} WIB</Text>
                                         <Text style={styles.cardText2}>HTM: {item.htm}</Text>
                                     </View>
-                                    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'flex-end' }}>
-                                        <FontAwesomeIcon icon={faPenToSquare} size={20} style={{ color: '#b99668' }} />
-                                    </View>
                                 </View>
                             </TouchableOpacity>
                         )}
                     />
-                )}
-            />
+            </ScrollView>
         </SafeAreaView>
     );
 };
 
 export default Createdata;
 
-
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#2d4442',
+    },
+    scrollContainer: {
+        flexGrow: 1,
+        padding: 10,
     },
     card: {
         backgroundColor: '#0c322c',
         padding: 20,
         borderRadius: 10,
         marginBottom: 15,
-        marginLeft: 20,
-        marginRight: 20,
-        marginTop: 25,
     },
     cardTitle: {
         fontSize: 30,
         fontWeight: 'bold',
         color: '#b99668',
         marginBottom: 10,
-        textAlign: 'center',
+        textAlign: 'center'
     },
     inputCard: {
         marginBottom: 15,
@@ -261,26 +253,25 @@ const styles = StyleSheet.create({
         color: '#E0E0E0',
         padding: 10,
         borderRadius: 8,
-        width: '100%', // Make input fields take full width
     },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-between', // Ensure buttons are spaced equally
-        marginTop: 10,
-    },
-    button: {
-        backgroundColor: '#b99668',
-        padding: 12,
-        borderRadius: 8,
-        alignItems: 'center',
-        flex: 1, // Make buttons take up equal space
-        marginHorizontal: 5, // Adjust margin between buttons
-    },
-    buttonText: {
-        color: '#fff',
-        fontSize: 16,
-        fontWeight: 'bold',
-    },
+        buttonContainer: {
+          flexDirection: 'row',
+          justifyContent: 'space-between', // Atur jarak antar tombol
+          marginTop: 10,
+        },
+        button: {
+          backgroundColor: '#b99668',
+          padding: 12,
+          borderRadius: 8,
+          alignItems: 'center',
+          flex: 1, // Tambahkan agar lebar tombol proporsional
+          marginHorizontal: 5, // Memberi jarak horizontal antar tombol
+        },
+        buttonText: {
+          color: '#fff',
+          fontSize: 16,
+          fontWeight: 'bold',
+        },
     avatar: {
         width: 60,
         height: 60,
@@ -291,6 +282,7 @@ const styles = StyleSheet.create({
         color: '#b99668',
         fontSize: 14,
     },
+
 
     safeArea: {
         flex: 1,
@@ -344,9 +336,13 @@ const styles = StyleSheet.create({
     },
     form: {
         paddingHorizontal: 20,
+        paddingBottom: 10,
     },
     flatList: {
-        paddingBottom: 50,
+        paddingTop: 10,
     },
 });
+
+
+
 

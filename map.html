@@ -1,32 +1,122 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
- <meta charset="UTF-8">
- <meta name="viewport" content="width=device-width, initial-scale=1.0">
- <title>Ini Peta Interaktif</title>
- <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
- <style>
-  html, body, #map {
-   height: 100%;
-   width: 100%;
-   margin: 0;
-  }
- </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Map</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <style>
+    html,
+    body,
+    #map {
+      height: 100%;
+      width: 100%;
+      margin: 0;
+    }
+    .popup-image {
+      width: 250px;
+      /* Lebar maksimum gambar */
+      height: auto;
+      /* Tinggi otomatis agar menjaga rasio */
+      margin-bottom: 10px;
+      margin-top: 20px;
+      border-radius: 8px;
+      /* Sudut melengkung */
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      /* Tambahkan efek bayangan */
+    }
+
+    .popup-title {
+      font-size: 20px;
+      /* Ukuran teks untuk nama wisata */
+      font-weight: bold;
+      color: #2c3e50;
+      /* Warna teks */
+      text-align: center;
+      /* Rata tengah untuk judul */
+    }
+
+    .popup-info {
+      font-size: 14px;
+      /* Ukuran teks untuk detail informasi lainnya */
+      color: #34495e;
+      /* Warna teks */
+      margin-bottom: 3px;
+      text-align: justify;
+    }
+  </style>
 </head>
+
 <body>
- <div id="map"></div>
- <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
- <script>
-  // yogyakarta
-  var map = L.map('map').setView([-7.797068, 110.370529], 13);
+  <div id="map"></div>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script>
+    var map = L.map('map').setView([-5.8315292, 110.45683], 13);
 
-  // basemap
-  var basemap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-   maxZoom: 18
-  }).addTo(map);
+    // basemap
+    /* Tile Basemap */
+    var basemap1 = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '<a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | <a href="DIVSIG UGM" target="_blank">DIVSIG UGM</a>'
+    });
+    var basemap2 = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri | <a href="Latihan WebGIS" target="_blank">DIVSIG UGM</a>'
+    }); var basemap3 = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+      attribution: 'Tiles &copy; Esri | <a href="Lathan WebGIS" target="_blank">DIVSIG UGM</a>'
+    });
+    var basemap4 = L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptile s.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+    });
+    basemap1.addTo(map);
 
-  // marker
-  var marker = L.marker([-7.797068, 110.370529]).addTo(map);
- </script>
+    /* Control Layer */
+    var baseMaps = {
+      "OpenStreetMap": basemap1,
+      "Esri World Street": basemap2,
+      "Esri Imagery": basemap3,
+      "Stadia Dark Mode": basemap4
+    };
+    L.control.layers(baseMaps).addTo(map);
+
+    // Menambahkan marker dengan ikon kustom dari data API
+    async function fetchMarkers() {
+      try {
+        const response = await fetch('http://10.0.2.2:3000/wisata'); // Ganti URL dengan API Anda
+        const data = await response.json();
+
+        // Tentukan ikon kustom
+        const customIcon = L.icon({
+          iconUrl: 'assets/marker.png',
+          iconSize: [40, 40],
+          iconAnchor: [20, 40],
+          popupAnchor: [0, -40]
+        });
+
+        // Tambahkan marker untuk setiap koordinat
+        data.forEach((item) => {
+          if (item.latitude && item.longitude) {
+            L.marker([parseFloat(item.latitude), parseFloat(item.longitude)], { icon: customIcon })
+              .addTo(map)
+              .bindPopup(`
+               <div>
+                <div class="popup-title">${item.nama_wisata}</div>
+                <div><img src="${item.image_url}" alt="${item.nama_wisata}" class="popup-image">
+    </div><div class="popup-info">Jam Operasional: ${item.jam_operasional} WIB</div>
+    <div class="popup-info">HTM: ${item.htm}</div>
+</div>
+              `);
+          }
+        });
+      } catch (error) {
+        console.error('Error fetching markers:', error);
+      }
+    }
+
+    // Panggil fungsi fetchMarkers
+    fetchMarkers();
+  </script>
 </body>
+
 </html>

@@ -37,7 +37,7 @@ function Section({children, title}: SectionProps): React.JSX.Element {
         style={[
           styles.sectionTitle,
           {
-            color:'orange',
+            color:'#b99668',
           },
         ]}>
         {title}
@@ -46,7 +46,7 @@ function Section({children, title}: SectionProps): React.JSX.Element {
         style={[
           styles.sectionDescription,
           {
-            color: isDarkMode ? Colors.light : Colors.dark,
+            color:'white',
           },
         ]}>
         {children}
@@ -74,7 +74,7 @@ function App(): React.JSX.Element {
         <Header />
         <View
           style={{
-            backgroundColor: '#FFECC8' 
+            backgroundColor: '#2d4442' 
           }}>
           <Section title="Nama">
            Raissa Nirbana
