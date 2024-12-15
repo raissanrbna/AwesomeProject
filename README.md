@@ -4,13 +4,10 @@
 </h1>
 
 <div style="display: flex; justify-content: space-between;">
-  <div style="flex: 1; padding-right: 20px;">
+  <div style="flex: 1; padding-right: 5px;">
     <p style="text-align: justify;">
       <strong>KARIMUNTRIP</strong> adalah aplikasi interaktif yang dirancang untuk mempermudah eksplorasi wisata di Karimunjawa. Aplikasi ini dilengkapi dengan fitur peta persebaran titik wisata yang memvisualisasikan lokasi-lokasi menarik secara geografis. Pengguna juga dapat menjelajahi daftar lengkap destinasi wisata yang dilengkapi dengan deskripsi dan navigasi langsung ke Google Maps untuk kemudahan perjalanan. Selain itu, aplikasi ini menyediakan fitur tambah data yang memungkinkan pengguna untuk berkontribusi dengan menambahkan informasi wisata baru, sehingga membantu memperkaya pengalaman bersama bagi semua pengguna.
     </p>
-  </div>
-  <div style="flex: 1; text-align: center;">
-    <img src="assets/header.png" alt="Karimunjawa" style="width: 100%; max-width: 400px;" />
   </div>
 </div>
 
@@ -55,7 +52,7 @@
 
 **Add dan Edit Data**
 <div align="center">
-  <img src="assets/form.png" alt="1" width="35%" style="margin-right: 10px;"/>
+  <img src="assets/form3.png" alt="1" width="35%" style="margin-right: 10px;"/>
   <img src="assets/form2.png" alt="2" width="35%"/>
 </div>
 </br>

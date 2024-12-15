@@ -114,7 +114,7 @@ const Createdata = () => {
                 data={[{ key: 'form' }]} // Use a dummy item for the form section
                 ListHeaderComponent={() => (
                     <View style={styles.card}>
-                        <Text style={styles.cardTitle}>Form Input Data</Text>
+                        <Text style={styles.cardTitle}>Form Input & Edit Data</Text>
 
                         <View style={styles.inputCard}>
                             <Text style={styles.inputLabel}>Nama Destinasi Wisata</Text>
